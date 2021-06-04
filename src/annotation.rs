@@ -20,7 +20,7 @@ impl Annotation {
         if !self.note.is_empty() {
             res.push_str(&[&self.note, "\n\n"].concat());
         }
-            res
+        res
     }
 }
 
