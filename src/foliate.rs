@@ -40,6 +40,7 @@ pub fn load() -> anyhow::Result<Vec<Section>> {
             .map(|oss| oss.to_string_lossy().to_string())
             .eq(&Some("json".to_string()))
         {
+            log::info!("load {}", entry.path().to_string_lossy());
             let piece_file = fs::File::open(entry.path())?;
             let piece: Foliate = from_reader(piece_file)?;
             res.push(piece.into());

@@ -1,3 +1,4 @@
+use crate::diff;
 use blake3::{Hash, Hasher};
 use serde::Deserialize;
 
@@ -41,5 +42,17 @@ impl Section {
             res.push_str(&annotation.to_md())
         }
         res
+    }
+
+    pub fn remove_old(&mut self) {
+        self.annotations.retain(|ann| diff::is_new(ann.hash().as_bytes()));
+    }
+
+    pub fn mark_as_old(&self) {
+        self.annotations.iter().for_each(|ann| {
+            if let Err(e) = diff::add_key(ann.hash().as_bytes()) {
+                log::error!("add key failed. {}", e);
+            }
+        });
     }
 }
