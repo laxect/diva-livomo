@@ -30,7 +30,7 @@ impl From<Foliate> for Section {
     }
 }
 
-pub fn load() -> anyhow::Result<Vec<Section>> {
+fn load() -> anyhow::Result<Vec<Section>> {
     let mut res = Vec::new();
     for entry in fs::read_dir(foliate_dir())? {
         let entry = entry?;
@@ -45,6 +45,20 @@ pub fn load() -> anyhow::Result<Vec<Section>> {
             let piece: Foliate = from_reader(piece_file)?;
             res.push(piece.into());
         }
+    }
+    Ok(res)
+}
+
+pub fn print() -> anyhow::Result<String> {
+    let mut res = String::new();
+    let fos = load().unwrap();
+    for mut item in fos.into_iter() {
+        item.remove_old();
+        if item.has_annotation() {
+            res.push_str(&item.to_md());
+            res.push('\n');
+        }
+        item.mark_as_old();
     }
     Ok(res)
 }

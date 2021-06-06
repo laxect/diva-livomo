@@ -1,5 +1,7 @@
-use diva_livomo::{foliate, save};
+use diva_livomo::{foliate, save, set_diff_flag};
 use simplelog::{ColorChoice, Config, LevelFilter, TermLogger, TerminalMode};
+
+mod options;
 
 fn main() -> anyhow::Result<()> {
     TermLogger::init(
@@ -8,13 +10,11 @@ fn main() -> anyhow::Result<()> {
         TerminalMode::Stderr,
         ColorChoice::Auto,
     )?;
-    let fos = foliate::load().unwrap();
-    for mut item in fos.into_iter() {
-        item.remove_old();
-        if item.has_annotation() {
-            println!("{}", item.to_md());
-        }
-        item.mark_as_old();
+    let options::Opts { foliate, no_diff } = options::parse();
+    set_diff_flag(!no_diff);
+    if foliate {
+        let md = foliate::print()?;
+        println!("{}", md);
     }
     save()?;
     Ok(())
