@@ -33,6 +33,5 @@ pub fn save() -> anyhow::Result<()> {
 }
 
 pub fn set_diff_flag(diff_on: bool) {
-    dbg!(diff_on);
     DIFF_ON.set(diff_on).unwrap()
 }

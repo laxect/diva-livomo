@@ -1,7 +1,5 @@
-use diva_livomo::{foliate, save, set_diff_flag};
+use diva_livomo::{foliate, options, save, set_diff_flag};
 use simplelog::{ColorChoice, Config, LevelFilter, TermLogger, TerminalMode};
-
-mod options;
 
 fn main() -> anyhow::Result<()> {
     TermLogger::init(
