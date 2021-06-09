@@ -8,6 +8,9 @@ pub struct Opts {
     /// import all content
     #[clap(long = "nodiff")]
     pub no_diff: bool,
+    /// print all info
+    #[clap(short, long)]
+    pub verbose: bool,
 }
 
 pub fn parse() -> Opts {
