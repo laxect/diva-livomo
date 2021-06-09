@@ -1,4 +1,4 @@
-pub use crate::annotation::{Annotation, Section};
+use crate::annotation::{Annotation, Section};
 use serde::Deserialize;
 use serde_json::from_reader;
 use std::{fs, path::PathBuf};

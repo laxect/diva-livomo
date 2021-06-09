@@ -1,4 +1,5 @@
 use clap::Clap;
+use std::path::PathBuf;
 
 #[derive(Clap, Debug)]
 pub struct Opts {
@@ -11,6 +12,8 @@ pub struct Opts {
     /// print all info
     #[clap(short, long)]
     pub verbose: bool,
+    #[clap(short, long)]
+    pub kindle: Option<PathBuf>,
 }
 
 pub fn parse() -> Opts {
