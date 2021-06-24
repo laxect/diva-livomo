@@ -38,6 +38,7 @@ fn parse_annotation(input: &str) -> anyhow::Result<(Annotation, String)> {
         Annotation {
             text: tidied_note,
             note: String::new(),
+            tags: Vec::new(),
         },
         title.to_owned(),
     ))

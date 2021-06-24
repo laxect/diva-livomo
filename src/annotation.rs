@@ -6,6 +6,9 @@ use serde::Deserialize;
 pub struct Annotation {
     pub text: String,
     pub note: String,
+    // can be nothing
+    #[serde(default)]
+    pub tags: Vec<String>,
 }
 
 impl Annotation {
@@ -17,9 +20,21 @@ impl Annotation {
     }
 
     pub fn to_md(&self) -> String {
-        let mut res = ["> ", &self.text, "\n\n"].concat();
+        let mut res;
+        if !self.text.is_empty() {
+            res = ["> ", &self.text, "\n\n"].concat();
+        } else {
+            res = String::new();
+        }
         if !self.note.is_empty() {
             res.push_str(&[&self.note, "\n\n"].concat());
+        }
+        if !self.tags.is_empty() {
+            for tag in self.tags.iter() {
+                res.push_str(&["#", tag, " "].concat());
+            }
+            res.push('\n');
+            res.push('\n');
         }
         res
     }

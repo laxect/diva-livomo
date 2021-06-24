@@ -1,14 +1,14 @@
-use std::lazy::{SyncLazy, SyncOnceCell};
+use once_cell::sync::{Lazy, OnceCell};
 
-static DB: SyncLazy<sled::Db> = SyncLazy::new(|| {
+static DB: Lazy<sled::Db> = Lazy::new(|| {
     let data_dir = dirs::data_dir()
         .expect("XDG config not setting")
-        .join("diva-īvõmō")
+        .join("diva-līvõmō")
         .join("sled");
     sled::open(data_dir).unwrap()
 });
 
-static DIFF_ON: SyncOnceCell<bool> = SyncOnceCell::new();
+static DIFF_ON: OnceCell<bool> = OnceCell::new();
 
 pub(crate) fn is_new<K: AsRef<[u8]>>(key: K) -> bool {
     if *DIFF_ON.get_or_init(|| true) {
