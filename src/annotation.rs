@@ -22,7 +22,7 @@ impl Annotation {
     pub fn to_md(&self) -> String {
         let mut res;
         if !self.text.is_empty() {
-            res = ["> ", &self.text, "\n\n"].concat();
+            res = ["> ", &self.text.replace("\n", "\n> "), "\n\n"].concat();
         } else {
             res = String::new();
         }
