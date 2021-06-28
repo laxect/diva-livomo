@@ -14,15 +14,15 @@ fn main() -> anyhow::Result<()> {
     set_diff_flag(!no_diff);
     if foliate {
         let md = foliate::print()?;
-        println!("{}", md);
+        print!("{}", md);
     }
     if let Some(kindle_clippings) = kindle {
         let md = kindle::parse(kindle_clippings)?;
-        println!("{}", md);
+        print!("{}", md);
     }
     if hypothesis {
         let md = hypothesis::print()?;
-        println!("{}", md);
+        print!("{}", md);
     }
     save()?;
     Ok(())
