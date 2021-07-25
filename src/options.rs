@@ -1,5 +1,4 @@
-use clap::Clap;
-use clap::ValueHint;
+use clap::{Clap, ValueHint};
 use std::path::PathBuf;
 
 #[derive(Clap, Debug)]
