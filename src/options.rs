@@ -1,4 +1,5 @@
 use clap::Clap;
+use clap::ValueHint;
 use std::path::PathBuf;
 
 #[derive(Clap, Debug)]
@@ -16,7 +17,7 @@ pub struct Opts {
     #[clap(short, long)]
     pub verbose: bool,
     /// import from kindle
-    #[clap(short, long)]
+    #[clap(short, long, value_hint=ValueHint::FilePath)]
     pub kindle: Option<PathBuf>,
 }
 

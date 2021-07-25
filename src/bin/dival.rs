@@ -16,12 +16,12 @@ fn main() -> anyhow::Result<()> {
         let md = foliate::print()?;
         print!("{}", md);
     }
-    if let Some(kindle_clippings) = kindle {
-        let md = kindle::parse(kindle_clippings)?;
-        print!("{}", md);
-    }
     if hypothesis {
         let md = hypothesis::print()?;
+        print!("{}", md);
+    }
+    if let Some(kindle_clippings) = kindle {
+        let md = kindle::parse(kindle_clippings)?;
         print!("{}", md);
     }
     save()?;
