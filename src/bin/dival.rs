@@ -13,16 +13,22 @@ fn main() -> anyhow::Result<()> {
     TermLogger::init(level, Config::default(), TerminalMode::Stderr, ColorChoice::Auto)?;
     set_diff_flag(!no_diff);
     if foliate {
-        let md = foliate::print()?;
-        print!("{}", md);
+        foliate::print()
+            .map_err(|e| log::error!("hypothesis error :{}", e))
+            .and_then(|md| Ok(print!("{}", md)))
+            .ok();
     }
     if hypothesis {
-        let md = hypothesis::print()?;
-        print!("{}", md);
+        hypothesis::print()
+            .map_err(|e| log::error!("hypothesis error :{}", e))
+            .and_then(|md| Ok(print!("{}", md)))
+            .ok();
     }
     if let Some(kindle_clippings) = kindle {
-        let md = kindle::parse(kindle_clippings)?;
-        print!("{}", md);
+        kindle::parse(kindle_clippings)
+            .map_err(|e| log::error!("kindle error :{}", e))
+            .and_then(|md| Ok(print!("{}", md)))
+            .ok();
     }
     save()?;
     Ok(())
