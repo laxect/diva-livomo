@@ -15,19 +15,19 @@ fn main() -> anyhow::Result<()> {
     if foliate {
         foliate::print()
             .map_err(|e| log::error!("hypothesis error :{}", e))
-            .and_then(|md| Ok(print!("{}", md)))
+            .map(|md| print!("{}", md))
             .ok();
     }
     if hypothesis {
         hypothesis::print()
             .map_err(|e| log::error!("hypothesis error :{}", e))
-            .and_then(|md| Ok(print!("{}", md)))
+            .map(|md| print!("{}", md))
             .ok();
     }
     if let Some(kindle_clippings) = kindle {
         kindle::parse(kindle_clippings)
             .map_err(|e| log::error!("kindle error :{}", e))
-            .and_then(|md| Ok(print!("{}", md)))
+            .map(|md| print!("{}", md))
             .ok();
     }
     save()?;
