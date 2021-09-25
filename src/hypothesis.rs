@@ -71,9 +71,9 @@ pub fn print() -> anyhow::Result<String> {
         .hypothesis
         .as_ref()
         .expect("No hypothes.is access token configured!");
-    let mut res = String::new();
     let runtime = tokio::runtime::Runtime::new()?;
     let secs = runtime.block_on(list_all(user, token))?;
+    let mut res = String::new();
     for mut sec in secs.into_iter() {
         sec.remove_old();
         if sec.has_annotation() {

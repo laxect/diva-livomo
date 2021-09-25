@@ -20,12 +20,11 @@ impl Annotation {
     }
 
     pub fn to_md(&self) -> String {
-        let mut res;
-        if !self.text.is_empty() {
-            res = ["> ", &self.text.replace("\n", "\n> "), "\n\n"].concat();
+        let mut res = if self.text.is_empty() {
+            String::new()
         } else {
-            res = String::new();
-        }
+            ["> ", &self.text.replace("\n", "\n> "), "\n\n"].concat()
+        };
         if !self.note.is_empty() {
             res.push_str(&[&self.note, "\n\n"].concat());
         }
