@@ -1,0 +1,11 @@
+image: archlinux
+packages:
+  - rustup
+tasks:
+  - setup: |
+      rustup default stable
+  - build: |
+      cd diva-livomo
+      cargo build --release
+artifacts:
+  - "diva-livomo/target/release/dival"
