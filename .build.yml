@@ -1,6 +1,8 @@
 image: archlinux
 packages:
   - rustup
+sources:
+  - "https://github.com/laxect/diva-livomo.git"
 tasks:
   - setup: |
       rustup default stable
