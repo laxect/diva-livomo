@@ -5,10 +5,5 @@ include!("src/options.rs");
 fn main() {
     let mut app = Opts::into_app();
     app.set_bin_name("dival");
-    generate_to(
-        Zsh, &mut app,
-        "dival",
-        ".",
-    )
-    .unwrap();
+    generate_to(Zsh, &mut app, "dival", ".").unwrap();
 }
