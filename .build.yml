@@ -8,7 +8,7 @@ tasks:
   - setup: |
       rustup default stable
   - audit: |
-      cd kikan
+      cd diva-livomo
       cargo audit
   - build: |
       cd diva-livomo
