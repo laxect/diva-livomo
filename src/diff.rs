@@ -1,10 +1,7 @@
 use once_cell::sync::{Lazy, OnceCell};
 
 static DB: Lazy<sled::Db> = Lazy::new(|| {
-    let data_dir = dirs::data_dir()
-        .expect("XDG config not setting")
-        .join("diva-līvõmō")
-        .join("sled");
+    let data_dir = dirs::data_dir().expect("XDG config not setting").join("diva-līvõmō").join("sled");
     sled::open(data_dir).unwrap()
 });
 

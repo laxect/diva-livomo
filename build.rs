@@ -1,9 +1,9 @@
 use clap::IntoApp;
-use clap_generate::{generate_to, generators::Zsh};
+use clap_complete::{generate_to, Shell};
 include!("src/options.rs");
 
 fn main() {
-    let mut app = Opts::into_app();
+    let mut app = Opts::command();
     app.set_bin_name("dival");
-    generate_to(Zsh, &mut app, "dival", ".").unwrap();
+    generate_to(Shell::Zsh, &mut app, "dival", ".").unwrap();
 }

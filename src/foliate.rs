@@ -1,12 +1,37 @@
 use crate::annotation::{Annotation, Section};
 use serde::Deserialize;
 use serde_json::from_reader;
-use std::{fs, path::PathBuf};
+use std::{borrow::Cow, fs, path::PathBuf};
 
 const FOLIATE: &str = "com.github.johnfactotum.Foliate";
 
 fn foliate_dir() -> PathBuf {
-    dirs::data_local_dir().expect("XDG CONFIG Not setting").join(FOLIATE)
+    dirs::data_local_dir().expect("XDG DATA Not setting").join(FOLIATE)
+}
+
+#[derive(Deserialize)]
+struct FoliateAnnotation {
+    title: Option<Cow<'static, str>>,
+    text: Cow<'static, str>,
+    note: Cow<'static, str>,
+}
+
+impl Annotation for FoliateAnnotation {
+    fn source(&self) -> Cow<str> {
+        self.title.as_ref().unwrap_or(&("".into())).clone()
+    }
+
+    fn id(&self) -> Cow<str> {
+        [self.source(), self.origin_text()].concat().into()
+    }
+
+    fn origin_text(&self) -> Cow<str> {
+        self.text.clone()
+    }
+
+    fn annotation(&self) -> Cow<str> {
+        self.note.clone()
+    }
 }
 
 #[derive(Deserialize)]
@@ -18,19 +43,20 @@ struct FoliateMetadata {
 struct Foliate {
     metadata: FoliateMetadata,
     #[serde(default)]
-    annotations: Vec<Annotation>,
+    annotations: Vec<FoliateAnnotation>,
 }
 
-impl From<Foliate> for Section {
+impl From<Foliate> for Section<'static, FoliateAnnotation> {
     fn from(fo: Foliate) -> Self {
         Self {
-            title: fo.metadata.title,
+            title: fo.metadata.title.into(),
             annotations: fo.annotations,
+            section_annotations: None,
         }
     }
 }
 
-fn load() -> anyhow::Result<Vec<Section>> {
+fn load() -> anyhow::Result<Vec<Section<'static, FoliateAnnotation>>> {
     let mut res = Vec::new();
     for entry in fs::read_dir(foliate_dir())? {
         let entry = entry?;
@@ -49,16 +75,15 @@ fn load() -> anyhow::Result<Vec<Section>> {
     Ok(res)
 }
 
-pub fn print() -> anyhow::Result<String> {
-    let mut res = String::new();
+pub fn print() -> anyhow::Result<Vec<Cow<'static, str>>> {
+    let mut res = Vec::new();
     let fos = load().unwrap();
-    for mut item in fos.into_iter() {
-        item.remove_old();
-        if item.has_annotation() {
-            res.push_str(&item.to_md());
-            res.push('\n');
+    for mut section in fos.into_iter() {
+        section.remove_old();
+        if section.has_annotation() {
+            res.append(&mut section.to_md_frags());
         }
-        item.mark_as_old();
+        section.mark_as_old();
     }
     Ok(res)
 }

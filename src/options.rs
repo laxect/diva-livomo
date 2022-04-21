@@ -1,5 +1,4 @@
-use clap::{Parser, ValueHint};
-use std::path::PathBuf;
+use clap::Parser;
 
 #[derive(Parser, Debug)]
 pub struct Opts {
@@ -15,9 +14,6 @@ pub struct Opts {
     /// print all info
     #[clap(short, long)]
     pub verbose: bool,
-    /// import from kindle
-    #[clap(short, long, value_hint=ValueHint::FilePath)]
-    pub kindle: Option<PathBuf>,
 }
 
 pub fn parse() -> Opts {
