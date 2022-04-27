@@ -3,6 +3,7 @@ use hypothesis::{
     annotations::{Annotation as HypoAnn, SearchQuery, Selector},
     Hypothesis,
 };
+use secrecy::ExposeSecret;
 use serde::Deserialize;
 use std::{borrow::Cow, collections::HashMap};
 
@@ -38,7 +39,6 @@ impl Annotation for HypoAnn {
 #[derive(Deserialize, Clone)]
 pub(crate) struct HypothesisConfig {
     user: String,
-    token: String,
 }
 
 async fn list_all(user: &str, token: &str) -> anyhow::Result<Vec<Section<'static, HypoAnn>>> {
@@ -62,13 +62,13 @@ async fn list_all(user: &str, token: &str) -> anyhow::Result<Vec<Section<'static
     Ok(collect(buffer))
 }
 
-pub fn print() -> anyhow::Result<Vec<Cow<'static, str>>> {
-    let HypothesisConfig { user, token } = crate::config::CONFIG
+pub fn print(token: secrecy::Secret<String>) -> anyhow::Result<Vec<Cow<'static, str>>> {
+    let HypothesisConfig { user } = crate::config::CONFIG
         .hypothesis
         .as_ref()
         .expect("No hypothes.is access token configured!");
     let runtime = tokio::runtime::Runtime::new()?;
-    let secs = runtime.block_on(list_all(user, token))?;
+    let secs = runtime.block_on(list_all(user, token.expose_secret()))?;
     let mut res = Vec::new();
     for mut sec in secs.into_iter() {
         sec.remove_old();
