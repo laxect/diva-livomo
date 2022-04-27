@@ -41,7 +41,7 @@ pub trait Annotation {
             md.push('\n');
         }
         if !annotation.is_empty() {
-            md.push_str(origin_text);
+            md.push_str(annotation);
             md.push('\n');
         }
         md.into()
