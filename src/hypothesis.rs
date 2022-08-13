@@ -1,5 +1,5 @@
 use crate::annotation::{collect, Annotation, Section};
-use hypothesis::{
+use hypothesis_rs::{
     annotations::{Annotation as HypoAnn, SearchQuery, Selector},
     Hypothesis,
 };
