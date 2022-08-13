@@ -1,6 +1,6 @@
 [package]
 name = "diva-livomo"
-version = "0.2.0"
+version = "0.2.2"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -15,7 +15,7 @@ blake3 = "1.3.1"
 clap = { version = "3.2.8", features = ["derive"] }
 dirs = "4.0.0"
 gio = "0.15.12"
-hypothesis = { git = "https://github.com/laxect/rust-hypothesis.git", branch = "patch", default-features = false }
+hypothesis = { git = "https://github.com/laxect/rust-hypothesis.git", default-features = false,rev = "3f0474d" }
 libsecret = { version = "0.1.4", features = ["v0_20"] }
 log = "0.4.17"
 once_cell = "1.12.0"
