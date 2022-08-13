@@ -28,7 +28,7 @@ fn get_hypothesis_token() -> anyhow::Result<Secret<String>> {
             .with_description("Enter new Token for Hypotheis")
             .with_prompt("Token:")
             .interact()
-            .map_err(|e| anyhow::anyhow!("pinentry error: {e}"))?
+            .map_err(|e| anyhow::anyhow!("pinentry error: {}", e))?
     } else {
         return Err(anyhow::anyhow!("No pinentry"));
     };
@@ -51,14 +51,14 @@ fn main() -> anyhow::Result<()> {
     let mut output = Vec::new();
     if foliate {
         foliate::print()
-            .map_err(|e| log::error!("foliate error: {e}"))
+            .map_err(|e| log::error!("foliate error: {}", e))
             .map(|mut md| output.append(&mut md))
             .ok();
     }
     if hypothesis {
         let token = get_hypothesis_token()?;
         hypothesis::print(token)
-            .map_err(|e| log::error!("hypothesis error: {e}"))
+            .map_err(|e| log::error!("hypothesis error: {}", e))
             .map(|mut md| output.append(&mut md))
             .ok();
     }
