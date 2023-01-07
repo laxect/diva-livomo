@@ -45,7 +45,7 @@ async fn list_all(user: &str, token: &str) -> anyhow::Result<Vec<Section<'static
     let mut buffer: HashMap<String, Vec<HypoAnn>> = HashMap::new();
 
     let api = Hypothesis::new(user, token)?;
-    let mut query = SearchQuery::builder().user(format!("acct:{}@hypothes.is", user)).build()?;
+    let mut query = SearchQuery::builder().user(format!("acct:{user}@hypothes.is")).build()?;
     let resp = api.search_annotations_return_all(&mut query).await?;
 
     for anno in resp.into_iter() {
